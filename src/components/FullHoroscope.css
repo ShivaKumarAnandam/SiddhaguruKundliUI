@@ -1,0 +1,305 @@
+/* ── Full Horoscope Results ────────────────────────────── */
+.nk-back {
+  background: #d35400;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  margin-left: auto;
+  display: block;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+.nk-back:hover { 
+  background: #e67e22;
+}
+
+.fh-header {
+  background: linear-gradient(135deg, #1a2847, #2c3e6b) !important;
+}
+
+.fh-results {
+  max-width: 640px;
+  margin: 24px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Summary Card ─────────────────────────────────────── */
+.fh-summary-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  overflow: hidden;
+}
+
+.fh-summary-header {
+  background: linear-gradient(135deg, #1a2847, #2c3e6b);
+  color: #fff;
+  padding: 20px 24px;
+  text-align: center;
+}
+.fh-summary-header h3 {
+  font-family: 'Bitter', serif;
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+.fh-summary-sub {
+  font-size: 13px;
+  opacity: .8;
+}
+
+.fh-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.fh-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff8f0;
+  border: 1.5px solid #f0d9c0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 90px;
+}
+.fh-chip-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: #999;
+  margin-bottom: 2px;
+}
+.fh-chip-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #d35400;
+  font-family: 'Bitter', serif;
+}
+
+
+/* ── Prediction Accordions ────────────────────────────── */
+.fh-predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fh-pred-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.fh-pred-section.open {
+  box-shadow: 0 4px 20px rgba(211,84,0,.12);
+}
+
+.fh-pred-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  text-align: left;
+  color: #333;
+  transition: background .2s;
+}
+.fh-pred-header:hover {
+  background: #fdf6f0;
+}
+
+.fh-pred-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.fh-pred-title {
+  flex: 1;
+  font-weight: 600;
+  font-family: 'Bitter', serif;
+}
+.fh-pred-arrow {
+  color: #d35400;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.fh-pred-body {
+  padding: 0 20px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+.fh-pred-body p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
+  margin: 16px 0 0;
+}
+.fh-pred-extra {
+  font-size: 13px !important;
+  color: #d35400 !important;
+  font-weight: 600;
+  margin-top: 10px !important;
+}
+
+/* ── Birth Details Table ──────────────────────────────── */
+.fh-details-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  overflow: hidden;
+}
+.fh-details-card h3 {
+  background: #1a2847;
+  color: #fff;
+  padding: 16px 24px;
+  font-size: 18px;
+  font-family: 'Bitter', serif;
+  margin: 0;
+}
+
+.fh-details-grid {
+  padding: 0;
+}
+
+.fh-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  gap: 12px;
+}
+.fh-detail-row:last-child { border-bottom: none; }
+.fh-detail-row:nth-child(odd) { background: #fafbfc; }
+
+.fh-detail-label {
+  font-size: 13px;
+  color: #888;
+  flex-shrink: 0;
+  min-width: 130px;
+}
+.fh-detail-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: right;
+}
+
+/* ── Person Info Bar ───────────────────────────────────── */
+.fh-person-bar {
+  background: #1a2847;
+  color: #fff;
+  border-radius: 12px;
+  padding: 14px 20px;
+  text-align: center;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.fh-person-sep {
+  opacity: .4;
+  margin: 0 4px;
+}
+
+/* ── Day Selector Tabs ────────────────────────────────── */
+.fh-day-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.fh-day-tabs::-webkit-scrollbar { display: none; }
+
+.fh-day-tab {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .2s;
+  min-width: 72px;
+}
+.fh-day-tab:hover { border-color: #d35400; background: #fff8f0; }
+.fh-day-tab.active {
+  background: #d35400;
+  border-color: #d35400;
+  color: #fff;
+}
+.fh-day-tab.active .fh-day-name,
+.fh-day-tab.active .fh-day-date { color: #fff; }
+
+.fh-day-emoji { font-size: 18px; }
+.fh-day-name { font-size: 12px; font-weight: 700; color: #333; }
+.fh-day-date { font-size: 11px; color: #888; }
+
+/* ── Mobile responsive ────────────────────────────────── */
+@media (max-width: 600px) {
+  .nk-back {
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+  
+  .fh-results { margin-top: 16px; gap: 12px; }
+
+  .fh-person-bar { border-radius: 0; font-size: 12px; padding: 10px 14px; }
+
+  .fh-day-tabs { gap: 4px; padding: 0; }
+  .fh-day-tab { min-width: 60px; padding: 10px 10px; border-radius: 10px; }
+  .fh-day-emoji { font-size: 16px; }
+  .fh-day-name { font-size: 11px; }
+  .fh-day-date { font-size: 10px; }
+
+  .fh-summary-card,
+  .fh-pred-section,
+  .fh-details-card { border-radius: 0; }
+
+  .fh-summary-header { padding: 16px; }
+  .fh-summary-header h3 { font-size: 18px; }
+
+  .fh-chips { padding: 14px 12px; gap: 8px; }
+  .fh-chip { min-width: 80px; padding: 8px 10px; }
+  .fh-chip-value { font-size: 13px; }
+
+  .fh-pred-header { padding: 14px 16px; font-size: 15px; }
+  .fh-pred-body { padding: 0 16px 16px; }
+  .fh-pred-body p { font-size: 13px; }
+
+  .fh-details-card h3 { padding: 14px 16px; font-size: 16px; }
+  .fh-detail-row {
+    padding: 10px 16px;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .fh-detail-label { min-width: auto; }
+  .fh-detail-value { text-align: left; }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+  .fh-chips { gap: 8px; }
+  .fh-chip { min-width: 85px; }
+}

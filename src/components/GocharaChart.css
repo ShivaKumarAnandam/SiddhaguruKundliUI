@@ -1,0 +1,193 @@
+/* Gochara Chart Styles */
+
+.gc-result {
+  margin-top: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.gc-result h3 {
+  color: #8B0000;
+  margin-bottom: 8px;
+}
+
+.gc-date {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.gc-chart-image {
+  text-align: center;
+  margin: 24px 0;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.gc-chart-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.gc-birth-summary,
+.gc-transits,
+.gc-effects,
+.gc-predictions,
+.gc-remedies,
+.gc-periods {
+  margin-top: 32px;
+}
+
+.gc-birth-summary h4,
+.gc-transits h4,
+.gc-effects h4,
+.gc-predictions h4,
+.gc-remedies h4,
+.gc-periods h4 {
+  color: #333;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.gc-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.gc-summary-item {
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.gc-summary-item .label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.gc-summary-item .value {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.gc-transit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.gc-transit-card {
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-radius: 8px;
+  border-left: 3px solid #667eea;
+}
+
+.gc-planet-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 8px;
+}
+
+.gc-planet-info div {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.gc-effect-card {
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.gc-effect-card h5 {
+  color: #667eea;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.gc-effect-card p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.gc-pred-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.gc-pred-card {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.gc-pred-card h5 {
+  color: #8B0000;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.gc-pred-card p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.gc-remedies ul {
+  list-style: none;
+  padding: 0;
+}
+
+.gc-remedies li {
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: #fff3e0;
+  border-left: 3px solid #ff9800;
+  border-radius: 4px;
+  color: #555;
+}
+
+.gc-period-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.gc-period-item {
+  padding: 16px;
+  background: #e8f5e9;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.gc-period-item .label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.gc-period-item .value {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2e7d32;
+}

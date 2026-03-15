@@ -1,0 +1,327 @@
+import { useState, useRef, useEffect, useCallback } from 'react'
+import './NakshatraCalculator.css'
+import './GocharaChart.css'
+import { useApiLockout } from '../hooks/useApiLockout'
+import LoadingSkeleton from './LoadingSkeleton'
+
+const API_BASE = 'https://siddhagurukundli.onrender.com/api'
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
+const GocharaChartAI = ({ onBack }) => {
+  const [name, setName] = useState('')
+  const [gender, setGender] = useState('Male')
+  const [date, setDate] = useState('')
+  const [hour, setHour] = useState('')
+  const [minute, setMinute] = useState('')
+  const [ampm, setAmpm] = useState('AM')
+  const [placeQuery, setPlaceQuery] = useState('')
+  const [placeResults, setPlaceResults] = useState([])
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [selectedPlace, setSelectedPlace] = useState(null)
+  const [searching, setSearching] = useState(false)
+  const [activeIdx, setActiveIdx] = useState(-1)
+  const dropdownRef = useRef(null)
+  const inputRef = useRef(null)
+  const debounceRef = useRef(null)
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  
+  // Global API lockout hook
+  const { isLocked, timeLeft, triggerLockout } = useApiLockout()
+
+  const searchPlaces = useCallback(async (q) => {
+    if (q.length < 2) { setPlaceResults([]); setShowDropdown(false); return }
+    setSearching(true); setShowDropdown(true)
+    try {
+      const resp = await fetch(`${API_BASE}/places?q=${encodeURIComponent(q)}&max_rows=8`)
+      const data = await resp.json()
+      setPlaceResults(data.results || []); setActiveIdx(-1)
+    } catch { setPlaceResults([]) }
+    setSearching(false)
+  }, [])
+
+  const handlePlaceInput = (e) => {
+    setPlaceQuery(e.target.value); setSelectedPlace(null)
+    clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => searchPlaces(e.target.value), 300)
+  }
+  
+  const selectPlace = (p) => { setPlaceQuery(p.display); setSelectedPlace(p); setShowDropdown(false) }
+  
+  const handlePlaceKeyDown = (e) => {
+    if (!showDropdown || !placeResults.length) return
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i+1, placeResults.length-1)) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i-1, 0)) }
+    else if (e.key === 'Enter' && activeIdx >= 0) { e.preventDefault(); selectPlace(placeResults[activeIdx]) }
+    else if (e.key === 'Escape') setShowDropdown(false)
+  }
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target) &&
+          inputRef.current && !inputRef.current.contains(e.target)) setShowDropdown(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); setError(''); setResult(null)
+    if (!name.trim()) { setError('Please enter a name'); return }
+    if (!date) { setError('Please enter date of birth'); return }
+    if (!hour) { setError('Please enter birth time'); return }
+    if (!placeQuery.trim()) { setError('Please enter place'); return }
+    
+    const body = { 
+      name: name.trim(), gender, date: date, 
+      hour: parseInt(hour), minute: parseInt(minute) || 0, ampm, place: placeQuery 
+    }
+    if (selectedPlace) { 
+      body.latitude = selectedPlace.lat
+      body.longitude = selectedPlace.lon
+      body.timezone = selectedPlace.timezone 
+    }
+    
+    setLoading(true)
+    try {
+      const resp = await fetch(`${API_BASE}/gochara/bygemini`, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(body) 
+      })
+      const data = await resp.json()
+      
+      // Check for 429 quota error
+      if (resp.status === 429 || (data.detail && data.detail.includes('429'))) {
+        triggerLockout() // Lock all AI buttons for 64 seconds
+        setError('API quota exhausted. All AI features locked for 64 seconds to stay free.')
+        return
+      }
+      
+      if (!resp.ok) throw new Error(data.detail || 'AI calculation failed')
+      setResult(data)
+    } catch (err) { setError(err.message) }
+    setLoading(false)
+  }
+
+  return (
+    <section className="nk-calc">
+      <div className="container">
+        <button className="nk-back" onClick={onBack}>← Back</button>
+        
+        <div className="nk-card">
+          <div className="nk-card-header fh-header">
+            <h2>✨ Gochara (Transit) Chart with Gemini AI</h2>
+            <p>AI-powered current planetary transits and their effects using Google Gemini 2.5 Flash</p>
+            <div className="ai-badge">⚡ Powered by Gemini AI</div>
+          </div>
+
+          <form className="nk-form" onSubmit={handleSubmit}>
+            <div className="nk-row">
+              <div className="nk-field nk-field-grow">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your name" value={name} onChange={e => setName(e.target.value)} />
+              </div>
+              <div className="nk-field nk-field-gender">
+                <label>Gender</label>
+                <div className="nk-toggle-group">
+                  <button type="button" className={`nk-toggle ${gender === 'Male' ? 'active' : ''}`} onClick={() => setGender('Male')}>Male</button>
+                  <button type="button" className={`nk-toggle ${gender === 'Female' ? 'active' : ''}`} onClick={() => setGender('Female')}>Female</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="nk-row">
+              <div className="nk-field nk-field-full">
+                <label>Date of Birth</label>
+                <input type="date" value={date} onChange={e => setDate(e.target.value)} max={new Date().toISOString().split('T')[0]} />
+              </div>
+            </div>
+
+            <div className="nk-row">
+              <div className="nk-field">
+                <label>Hour</label>
+                <input type="number" placeholder="HH" min="1" max="12" value={hour} onChange={e => setHour(e.target.value)} />
+              </div>
+              <div className="nk-field">
+                <label>Minute</label>
+                <input type="number" placeholder="MM" min="0" max="59" value={minute} onChange={e => setMinute(e.target.value)} />
+              </div>
+              <div className="nk-field">
+                <label>AM / PM</label>
+                <div className="nk-toggle-group">
+                  <button type="button" className={`nk-toggle ${ampm === 'AM' ? 'active' : ''}`} onClick={() => setAmpm('AM')}>AM</button>
+                  <button type="button" className={`nk-toggle ${ampm === 'PM' ? 'active' : ''}`} onClick={() => setAmpm('PM')}>PM</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="nk-row">
+              <div className="nk-field nk-field-full">
+                <label>Place of Birth</label>
+                <div className="nk-place-wrap">
+                  <input ref={inputRef} type="text" autoComplete="off" placeholder="Type city or village name..."
+                    value={placeQuery} onChange={handlePlaceInput} onKeyDown={handlePlaceKeyDown} />
+                  {showDropdown && (
+                    <div className="nk-place-dropdown" ref={dropdownRef}>
+                      {searching && <div className="nk-place-loading">Searching...</div>}
+                      {!searching && placeResults.length === 0 && placeQuery.length >= 2 &&
+                        <div className="nk-place-loading">No places found</div>}
+                      {placeResults.map((p, i) => (
+                        <div key={p.geoname_id || i} className={`nk-place-item ${i === activeIdx ? 'active' : ''}`}
+                          onClick={() => selectPlace(p)}>
+                          <span className="nk-place-name">{p.name}</span>
+                          <span className="nk-place-sub">{[p.admin1, p.country].filter(Boolean).join(', ')}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {selectedPlace && (
+                  <div className="nk-geo-badge">
+                    ✓ {selectedPlace.display} — {selectedPlace.lat.toFixed(4)}°N, {selectedPlace.lon.toFixed(4)}°E
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {error && <div className="nk-error">{error}</div>}
+
+            <button 
+              type="submit" 
+              className="btn nk-submit" 
+              disabled={loading || isLocked}
+              style={{
+                opacity: (loading || isLocked) ? 0.6 : 1,
+                cursor: (loading || isLocked) ? 'not-allowed' : 'pointer',
+                backgroundColor: isLocked ? '#666' : ''
+              }}
+            >
+              {isLocked 
+                ? `⏳ Wait ${timeLeft}s (API Resting)` 
+                : loading 
+                ? '✨ AI Calculating Transits...' 
+                : '✨ Generate Gochara Chart'}
+            </button>
+          </form>
+        </div>
+
+        {loading && <LoadingSkeleton lines={12} title="✨ AI is calculating planetary transits..." />}
+
+        {result && (
+          <div className="gc-result">
+            <h3>✨ Gochara Chart Result</h3>
+            <p className="gc-date">Calculated on: {result.calculation_date} at {result.calculation_time}</p>
+            
+            {/* Chart Image */}
+            {result.chart_image && result.chart_image.data && (
+              <div className="gc-chart-image">
+                <img 
+                  src={`data:${result.chart_image.mime_type};base64,${result.chart_image.data}`} 
+                  alt="Gochara Chart" 
+                />
+              </div>
+            )}
+
+            {/* Birth Chart Summary */}
+            <div className="gc-birth-summary">
+              <h4>Birth Chart Summary</h4>
+              <div className="gc-summary-grid">
+                <div className="gc-summary-item">
+                  <span className="label">Ascendant:</span>
+                  <span className="value">{result.birth_chart.ascendant}</span>
+                </div>
+                <div className="gc-summary-item">
+                  <span className="label">Sun Sign:</span>
+                  <span className="value">{result.birth_chart.sun_sign}</span>
+                </div>
+                <div className="gc-summary-item">
+                  <span className="label">Moon Sign:</span>
+                  <span className="value">{result.birth_chart.moon_sign}</span>
+                </div>
+                <div className="gc-summary-item">
+                  <span className="label">Birth Nakshatra:</span>
+                  <span className="value">{result.birth_chart.birth_nakshatra}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Current Transits */}
+            <div className="gc-transits">
+              <h4>Current Planetary Positions</h4>
+              <div className="gc-transit-grid">
+                {Object.entries(result.current_transits).map(([planet, data]) => (
+                  <div key={planet} className="gc-transit-card">
+                    <div className="gc-planet-name">{planet.toUpperCase()}</div>
+                    <div className="gc-planet-info">
+                      <div>Sign: <strong>{data.sign}</strong></div>
+                      <div>Nakshatra: <strong>{data.nakshatra}</strong></div>
+                      <div>House: <strong>{data.house}</strong></div>
+                      <div>Degree: <strong>{data.degree.toFixed(2)}°</strong></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Transit Effects */}
+            <div className="gc-effects">
+              <h4>Transit Effects</h4>
+              {Object.entries(result.transit_effects).map(([planet, effect]) => (
+                <div key={planet} className="gc-effect-card">
+                  <h5>{planet.toUpperCase()}</h5>
+                  <p>{effect}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Major Predictions */}
+            <div className="gc-predictions">
+              <h4>Major Predictions</h4>
+              <div className="gc-pred-grid">
+                {Object.entries(result.major_predictions).map(([area, prediction]) => (
+                  <div key={area} className="gc-pred-card">
+                    <h5>{area.charAt(0).toUpperCase() + area.slice(1)}</h5>
+                    <p>{prediction}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Remedies */}
+            <div className="gc-remedies">
+              <h4>Recommended Remedies</h4>
+              <ul>
+                {result.remedies.map((remedy, idx) => (
+                  <li key={idx}>{remedy}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Favorable Periods */}
+            <div className="gc-periods">
+              <h4>Favorable Periods</h4>
+              <div className="gc-period-grid">
+                <div className="gc-period-item">
+                  <span className="label">Next 7 Days:</span>
+                  <span className="value">{result.favorable_periods.next_7_days}</span>
+                </div>
+                <div className="gc-period-item">
+                  <span className="label">Next Month:</span>
+                  <span className="value">{result.favorable_periods.next_month}</span>
+                </div>
+                <div className="gc-period-item">
+                  <span className="label">Next 3 Months:</span>
+                  <span className="value">{result.favorable_periods.next_3_months}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+export default GocharaChartAI

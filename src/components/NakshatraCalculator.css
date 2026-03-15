@@ -1,0 +1,303 @@
+.nk-calc {
+  padding: 24px 0 60px;
+  background: #f8f9fa;
+  min-height: 80vh;
+}
+
+.nk-back {
+  background: #d35400;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  margin-left: auto;
+  display: block;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+.nk-back:hover { 
+  background: #e67e22;
+}
+
+/* ── Card ─────────────────────────────────────────────── */
+.nk-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  overflow: hidden;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.nk-card-header {
+  background: linear-gradient(135deg, #d35400, #e67e22);
+  color: #fff;
+  padding: 24px;
+  text-align: center;
+}
+.nk-card-header h2 { font-size: 22px; margin-bottom: 4px; }
+.nk-card-header p  { font-size: 13px; opacity: .85; }
+
+/* ── Form ─────────────────────────────────────────────── */
+.nk-form { padding: 24px; }
+
+.nk-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.nk-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.nk-field-grow { flex: 2; }
+.nk-field-gender { flex: 0 0 auto; min-width: 150px; }
+.nk-field-full { flex: 1 1 100%; }
+
+.nk-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.nk-field input,
+.nk-field select {
+  padding: 10px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  background: #fff;
+  transition: border-color .2s;
+  width: 100%;
+}
+.nk-field input:focus,
+.nk-field select:focus {
+  border-color: #d35400;
+  box-shadow: 0 0 0 3px rgba(211,84,0,.1);
+}
+
+/* Toggle buttons (Gender, AM/PM) */
+.nk-toggle-group {
+  display: flex;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.nk-toggle {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  background: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .2s;
+  color: #666;
+}
+.nk-toggle + .nk-toggle { border-left: 1.5px solid #ddd; }
+.nk-toggle.active {
+  background: #d35400;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Place autocomplete ───────────────────────────────── */
+.nk-place-wrap { position: relative; }
+
+.nk-place-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 50;
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+
+.nk-place-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.nk-place-item:hover,
+.nk-place-item.active { background: #fff3e0; }
+.nk-place-item:last-child { border-bottom: none; }
+
+.nk-place-name { font-size: 14px; color: #333; }
+.nk-place-sub  { font-size: 11px; color: #999; }
+
+.nk-place-loading {
+  padding: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.nk-geo-badge {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #2e7d32;
+  background: #e8f5e9;
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* ── Submit ────────────────────────────────────────────── */
+.nk-submit {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  margin-top: 8px;
+  border-radius: 8px;
+}
+.nk-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.nk-error {
+  background: #ffebee;
+  color: #c62828;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* ── Result card ──────────────────────────────────────── */
+.nk-result-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  max-width: 640px;
+  margin: 24px auto 0;
+  overflow: hidden;
+}
+
+.nk-result-card h3 {
+  background: #1a2847;
+  color: #fff;
+  padding: 16px 24px;
+  font-size: 18px;
+}
+
+.nk-result-grid { padding: 0; }
+
+.nk-result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  gap: 12px;
+}
+.nk-result-row:last-child { border-bottom: none; }
+.nk-result-row.highlight { background: #fff8f0; }
+
+.nk-result-label {
+  font-size: 13px;
+  color: #888;
+  flex-shrink: 0;
+  min-width: 120px;
+}
+.nk-result-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: right;
+}
+
+.nk-result-meta {
+  border-top: 2px solid #f0f0f0;
+  padding: 16px 24px;
+}
+.nk-result-meta h4 {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 8px;
+}
+.nk-meta-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* ── Mobile responsive ────────────────────────────────── */
+@media (max-width: 600px) {
+  .nk-calc { padding: 16px 0 40px; }
+  
+  .nk-back {
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+
+  .nk-card { border-radius: 0; box-shadow: none; border-bottom: 1px solid #eee; }
+  .nk-card-header { padding: 20px 16px; }
+  .nk-card-header h2 { font-size: 19px; }
+  .nk-form { padding: 16px; }
+
+  .nk-row { flex-direction: column; gap: 12px; }
+  .nk-field-gender { min-width: 100%; }
+
+  .nk-field input,
+  .nk-field select { font-size: 16px; padding: 12px; }
+
+  .nk-toggle { padding: 12px; font-size: 15px; }
+
+  .nk-result-card { border-radius: 0; margin-top: 16px; }
+  .nk-result-row { padding: 10px 16px; flex-direction: column; gap: 2px; }
+  .nk-result-label { min-width: auto; }
+  .nk-result-value { text-align: left; }
+  .nk-result-meta { padding: 12px 16px; }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+  .nk-row { flex-wrap: wrap; }
+  .nk-field { min-width: calc(50% - 6px); }
+  .nk-field-full { min-width: 100%; }
+}
+
+
+/* AI Badge Styling */
+.ai-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+._ai-link {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-left: 3px solid #667eea;
+}
+
+._ai-link:hover {
+  background: linear-gradient(135deg, #667eea25 0%, #764ba225 100%);
+}

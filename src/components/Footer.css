@@ -1,0 +1,236 @@
+.global-footer {
+  background: #0a0e27;
+  color: white;
+  padding: 40px 20px 32px;
+  margin-top: auto;
+  text-align: center;
+}
+
+.global-footer .container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.global-footer h3 {
+  font-size: 32px;
+  margin: 0 0 32px;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.global-footer a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.global-footer a:hover {
+  color: #e67e22;
+}
+
+/* Contact Items - Side by Side */
+._contact-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  margin-bottom: 48px;
+  flex-wrap: nowrap;
+}
+
+._contact-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+._icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+  height: 65px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+}
+
+._icon-wrapper:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+._icon-wrapper svg {
+  color: white;
+  width: 30px;
+  height: 30px;
+}
+
+/* Tourism Link */
+._tourism-link {
+  display: block;
+  margin-bottom: 48px;
+}
+
+._tourism-link h3 {
+  margin-bottom: 0;
+}
+
+/* Social Icons - Single Row */
+._social-icons-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+._social-icons {
+  list-style: none;
+  padding: 0;
+  margin: 32px 0 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+._social-icons ._icon-wrapper {
+  width: 70px;
+  height: 70px;
+}
+
+._social-icons ._icon-wrapper svg {
+  width: 34px;
+  height: 34px;
+}
+
+/* Copyright */
+._copyright {
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+._copyright a {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .global-footer {
+    padding: 20px 16px 18px;
+  }
+
+  .global-footer h3 {
+    font-size: 17px;
+    margin-bottom: 14px;
+  }
+
+  ._contact-items {
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  ._contact-item {
+    font-size: 15px;
+  }
+
+  ._icon-wrapper {
+    width: 48px;
+    height: 48px;
+  }
+
+  ._icon-wrapper svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  ._tourism-link {
+    margin-bottom: 20px;
+  }
+
+  ._social-icons {
+    gap: 8px;
+    margin: 14px 0 20px;
+    flex-wrap: nowrap;
+  }
+
+  ._social-icons ._icon-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+
+  ._social-icons ._icon-wrapper svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  ._copyright {
+    padding-top: 18px;
+  }
+
+  ._copyright a {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .global-footer {
+    padding: 18px 14px 16px;
+  }
+
+  .global-footer h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  ._contact-items {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  ._contact-item {
+    font-size: 13px;
+  }
+
+  ._icon-wrapper {
+    width: 44px;
+    height: 44px;
+  }
+
+  ._icon-wrapper svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  ._tourism-link {
+    margin-bottom: 18px;
+  }
+
+  ._social-icons {
+    gap: 6px;
+    margin: 12px 0 18px;
+    flex-wrap: nowrap;
+  }
+
+  ._social-icons ._icon-wrapper {
+    width: 46px;
+    height: 46px;
+  }
+
+  ._social-icons ._icon-wrapper svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  ._copyright {
+    padding-top: 16px;
+  }
+
+  ._copyright a {
+    font-size: 12px;
+  }
+}
