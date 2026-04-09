@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import './NakshatraCalculator.css'
-
-const API_BASE = 'https://siddhagurukundli.onrender.com/api'
+import { API_BASE } from '../apiConfig'
 
 const NakshatraCalculator = ({ onBack }) => {
   // Form state
@@ -17,26 +16,41 @@ const NakshatraCalculator = ({ onBack }) => {
   const [placeResults, setPlaceResults] = useState([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState(null)
+  const [placeValidated, setPlaceValidated] = useState(false)
   const [searching, setSearching] = useState(false)
   const [activeIdx, setActiveIdx] = useState(-1)
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
   const debounceRef = useRef(null)
+  const cacheRef = useRef({}) // Cache for place search results
 
   // Result state
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Place search with debounce
+  // Place search with debounce and caching
   const searchPlaces = useCallback(async (q) => {
     if (q.length < 2) { setPlaceResults([]); setShowDropdown(false); return }
+    
+    // Check cache first
+    if (cacheRef.current[q]) {
+      setPlaceResults(cacheRef.current[q])
+      setShowDropdown(true)
+      setActiveIdx(-1)
+      return
+    }
+    
     setSearching(true)
     setShowDropdown(true)
     try {
       const resp = await fetch(`${API_BASE}/places?q=${encodeURIComponent(q)}&max_rows=8`)
       const data = await resp.json()
-      setPlaceResults(data.results || [])
+      const results = data.results || []
+      
+      // Cache the results
+      cacheRef.current[q] = results
+      setPlaceResults(results)
       setActiveIdx(-1)
     } catch { setPlaceResults([]) }
     setSearching(false)
@@ -46,13 +60,23 @@ const NakshatraCalculator = ({ onBack }) => {
     const val = e.target.value
     setPlaceQuery(val)
     setSelectedPlace(null)
+    setPlaceValidated(false)
     clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => searchPlaces(val), 300)
+    
+    if (cacheRef.current[val]) {
+      setPlaceResults(cacheRef.current[val])
+      setShowDropdown(true)
+      setActiveIdx(-1)
+      return
+    }
+    
+    debounceRef.current = setTimeout(() => searchPlaces(val), 150)
   }
 
   const selectPlace = (place) => {
     setPlaceQuery(place.display)
     setSelectedPlace(place)
+    setPlaceValidated(true)
     setShowDropdown(false)
     setPlaceResults([])
   }
@@ -65,17 +89,22 @@ const NakshatraCalculator = ({ onBack }) => {
     else if (e.key === 'Escape') { setShowDropdown(false) }
   }
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click and clear invalid input
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target) &&
           inputRef.current && !inputRef.current.contains(e.target)) {
         setShowDropdown(false)
+        // Clear input if user didn't select from dropdown
+        if (placeQuery && !placeValidated) {
+          setPlaceQuery('')
+          setError('Please select a place from the dropdown suggestions')
+        }
       }
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
-  }, [])
+  }, [placeQuery, placeValidated])
 
   // Submit
   const handleSubmit = async (e) => {
@@ -87,6 +116,7 @@ const NakshatraCalculator = ({ onBack }) => {
     if (!date) { setError('Please enter date of birth'); return }
     if (!hour) { setError('Please enter time of birth'); return }
     if (!placeQuery.trim()) { setError('Please enter place of birth'); return }
+    if (!placeValidated || !selectedPlace) { setError('Please select a place from the dropdown suggestions'); return }
 
     const body = {
       name: name.trim(),
@@ -221,7 +251,7 @@ const NakshatraCalculator = ({ onBack }) => {
 
             {error && <div className="nk-error">{error}</div>}
 
-            <button type="submit" className="btn nk-submit" disabled={loading}>
+            <button type="submit" className="btn nk-submit" disabled={loading || !placeValidated}>
               {loading ? 'Calculating...' : 'Calculate Nakshatra'}
             </button>
           </form>

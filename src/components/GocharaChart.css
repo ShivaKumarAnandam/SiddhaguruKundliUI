@@ -191,3 +191,283 @@
   font-weight: 600;
   color: #2e7d32;
 }
+
+/* South Indian Chart Styles */
+
+.south-indian-chart {
+  max-width: 600px;
+  margin: 24px auto;
+  padding: 16px;
+  background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(139, 0, 0, 0.15);
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 2px;
+  background: #8B0000;
+  border: 3px solid #8B0000;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.chart-cell {
+  background: #fffaf0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8B0000;
+  word-wrap: break-word;
+  position: relative;
+  min-height: 80px;
+}
+
+.house-number {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8B0000;
+  background: rgba(255, 250, 240, 0.8);
+  padding: 2px 6px;
+  border-radius: 3px;
+  line-height: 1;
+  z-index: 2;
+}
+
+.rashi-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+.planet-content {
+  margin-top: 28px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  gap: 2px;
+}
+
+.planet-content div {
+  font-weight: 700;
+  color: #d35400;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.chart-center-merged {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.chart-logo {
+  max-width: 60%;
+  max-height: 60%;
+  object-fit: contain;
+  opacity: 1;
+  position: relative;
+  left: 7px;
+}
+
+.chart-container {
+  margin: 32px 0;
+}
+
+.chart-container h4 {
+  text-align: center;
+  color: #8B0000;
+  margin-bottom: 16px;
+}
+
+/* Planets Table */
+
+.planets-table-container {
+  margin-top: 32px;
+  overflow-x: auto;
+}
+
+.planets-table-container h4 {
+  color: #8B0000;
+  margin-bottom: 16px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.planets-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.planets-table thead {
+  background: linear-gradient(135deg, #8B0000 0%, #a52a2a 100%);
+  color: white;
+}
+
+.planets-table th {
+  padding: 12px 8px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.planets-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+  color: #333;
+}
+
+.planets-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.planets-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.gc-metadata {
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.gc-metadata p {
+  margin: 8px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.gc-metadata strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .south-indian-chart {
+    max-width: 100%;
+    padding: 8px;
+  }
+
+  .chart-grid {
+    gap: 1px;
+  }
+
+  .chart-cell {
+    font-size: 10px;
+    padding: 4px;
+    min-height: 60px;
+  }
+
+  .house-number {
+    font-size: 9px;
+    padding: 1px 4px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .rashi-icon {
+    width: 70%;
+    height: 70%;
+  }
+
+  .planet-content {
+    margin-top: 18px;
+    gap: 1px;
+  }
+
+  .planet-content div {
+    font-size: 11px;
+    line-height: 1.1;
+  }
+
+  .chart-logo {
+    max-width: 50%;
+    max-height: 50%;
+    left: 5px;
+  }
+  
+  .chart-symbol {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .planets-table {
+    font-size: 11px;
+  }
+  
+  .planets-table th,
+  .planets-table td {
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-cell {
+    font-size: 9px;
+    padding: 2px;
+    min-height: 50px;
+  }
+
+  .house-number {
+    font-size: 8px;
+    padding: 1px 3px;
+  }
+
+  .rashi-icon {
+    width: 65%;
+    height: 65%;
+  }
+
+  .planet-content {
+    margin-top: 14px;
+  }
+
+  .planet-content div {
+    font-size: 9px;
+  }
+
+  .chart-logo {
+    max-width: 45%;
+    max-height: 45%;
+    left: 3px;
+  }
+}

@@ -218,6 +218,41 @@
   margin: 0 4px;
 }
 
+/* ── Birth Banner ──────────────────────────────────────── */
+.fh-birth-banner {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 20px 0;
+  padding: 24px;
+  background: linear-gradient(135deg, #1a2847 0%, #2c3e50 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  color: #fff;
+}
+
+.fh-birth-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.fh-birth-label {
+  font-size: 13px;
+  color: rgba(255,255,255,.7);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.fh-birth-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff9800; /* Goldish-Orange */
+  font-family: 'Bitter', serif;
+}
+
 /* ── Day Selector Tabs ────────────────────────────────── */
 .fh-day-tabs {
   display: flex;
@@ -267,6 +302,15 @@
   .fh-results { margin-top: 16px; gap: 12px; }
 
   .fh-person-bar { border-radius: 0; font-size: 12px; padding: 10px 14px; }
+
+  .fh-birth-banner {
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 0;
+    padding: 20px;
+  }
+  .fh-birth-label { font-size: 11px; }
+  .fh-birth-value { font-size: 20px; }
 
   .fh-day-tabs { gap: 4px; padding: 0; }
   .fh-day-tab { min-width: 60px; padding: 10px 10px; border-radius: 10px; }

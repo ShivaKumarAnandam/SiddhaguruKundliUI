@@ -3,8 +3,7 @@ import './NakshatraCalculator.css'
 import './FullHoroscope.css'
 import { useApiLockout } from '../hooks/useApiLockout'
 import LoadingSkeleton from './LoadingSkeleton'
-
-const API_BASE = 'https://siddhagurukundli.onrender.com/api'
+import { API_BASE } from '../apiConfig'
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 const FullHoroscopeAI = ({ onBack }) => {
@@ -18,11 +17,13 @@ const FullHoroscopeAI = ({ onBack }) => {
   const [placeResults, setPlaceResults] = useState([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState(null)
+  const [placeValidated, setPlaceValidated] = useState(false)
   const [searching, setSearching] = useState(false)
   const [activeIdx, setActiveIdx] = useState(-1)
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
   const debounceRef = useRef(null)
+  const cacheRef = useRef({})
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -33,19 +34,31 @@ const FullHoroscopeAI = ({ onBack }) => {
 
   const searchPlaces = useCallback(async (q) => {
     if (q.length < 2) { setPlaceResults([]); setShowDropdown(false); return }
+    if (cacheRef.current[q]) { setPlaceResults(cacheRef.current[q]); setShowDropdown(true); setActiveIdx(-1); return }
     setSearching(true); setShowDropdown(true)
     try {
       const resp = await fetch(`${API_BASE}/places?q=${encodeURIComponent(q)}&max_rows=8`)
       const data = await resp.json()
-      setPlaceResults(data.results || []); setActiveIdx(-1)
+      const results = data.results || []
+      cacheRef.current[q] = results
+      setPlaceResults(results); setActiveIdx(-1)
     } catch { setPlaceResults([]) }
     setSearching(false)
   }, [])
 
   const handlePlaceInput = (e) => {
-    setPlaceQuery(e.target.value); setSelectedPlace(null)
+    const val = e.target.value
+    setPlaceQuery(val); setSelectedPlace(null); setPlaceValidated(false)
     clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => searchPlaces(e.target.value), 300)
+    
+    if (cacheRef.current[val]) {
+      setPlaceResults(cacheRef.current[val])
+      setShowDropdown(true)
+      setActiveIdx(-1)
+      return
+    }
+    
+    debounceRef.current = setTimeout(() => searchPlaces(val), 150)
   }
   
   const selectPlace = (p) => { setPlaceQuery(p.display); setSelectedPlace(p); setShowDropdown(false) }

@@ -3,8 +3,7 @@ import './NakshatraCalculator.css'
 import './GocharaChart.css'
 import { useApiLockout } from '../hooks/useApiLockout'
 import LoadingSkeleton from './LoadingSkeleton'
-
-const API_BASE = 'https://siddhagurukundli.onrender.com/api'
+import { API_BASE } from '../apiConfig'
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 const GocharaChartAI = ({ onBack }) => {
@@ -18,11 +17,13 @@ const GocharaChartAI = ({ onBack }) => {
   const [placeResults, setPlaceResults] = useState([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState(null)
+  const [placeValidated, setPlaceValidated] = useState(false)
   const [searching, setSearching] = useState(false)
   const [activeIdx, setActiveIdx] = useState(-1)
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
   const debounceRef = useRef(null)
+  const cacheRef = useRef({})
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -32,22 +33,34 @@ const GocharaChartAI = ({ onBack }) => {
 
   const searchPlaces = useCallback(async (q) => {
     if (q.length < 2) { setPlaceResults([]); setShowDropdown(false); return }
+    if (cacheRef.current[q]) { setPlaceResults(cacheRef.current[q]); setShowDropdown(true); setActiveIdx(-1); return }
     setSearching(true); setShowDropdown(true)
     try {
       const resp = await fetch(`${API_BASE}/places?q=${encodeURIComponent(q)}&max_rows=8`)
       const data = await resp.json()
-      setPlaceResults(data.results || []); setActiveIdx(-1)
+      const results = data.results || []
+      cacheRef.current[q] = results
+      setPlaceResults(results); setActiveIdx(-1)
     } catch { setPlaceResults([]) }
     setSearching(false)
   }, [])
 
   const handlePlaceInput = (e) => {
-    setPlaceQuery(e.target.value); setSelectedPlace(null)
+    const val = e.target.value
+    setPlaceQuery(val); setSelectedPlace(null); setPlaceValidated(false)
     clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => searchPlaces(e.target.value), 300)
+    
+    if (cacheRef.current[val]) {
+      setPlaceResults(cacheRef.current[val])
+      setShowDropdown(true)
+      setActiveIdx(-1)
+      return
+    }
+    
+    debounceRef.current = setTimeout(() => searchPlaces(val), 150)
   }
   
-  const selectPlace = (p) => { setPlaceQuery(p.display); setSelectedPlace(p); setShowDropdown(false) }
+  const selectPlace = (p) => { setPlaceQuery(p.display); setSelectedPlace(p); setPlaceValidated(true); setShowDropdown(false) }
   
   const handlePlaceKeyDown = (e) => {
     if (!showDropdown || !placeResults.length) return
@@ -60,11 +73,18 @@ const GocharaChartAI = ({ onBack }) => {
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target) &&
-          inputRef.current && !inputRef.current.contains(e.target)) setShowDropdown(false)
+          inputRef.current && !inputRef.current.contains(e.target)) {
+        setShowDropdown(false)
+        // Clear input if user didn't select from dropdown
+        if (placeQuery && !placeValidated) {
+          setPlaceQuery('')
+          setError('Please select a place from the dropdown suggestions')
+        }
+      }
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
-  }, [])
+  }, [placeQuery, placeValidated])
 
   const handleSubmit = async (e) => {
     e.preventDefault(); setError(''); setResult(null)
@@ -72,6 +92,7 @@ const GocharaChartAI = ({ onBack }) => {
     if (!date) { setError('Please enter date of birth'); return }
     if (!hour) { setError('Please enter birth time'); return }
     if (!placeQuery.trim()) { setError('Please enter place'); return }
+    if (!placeValidated || !selectedPlace) { setError('Please select a place from the dropdown suggestions'); return }
     
     const body = { 
       name: name.trim(), gender, date: date, 
@@ -191,10 +212,10 @@ const GocharaChartAI = ({ onBack }) => {
             <button 
               type="submit" 
               className="btn nk-submit" 
-              disabled={loading || isLocked}
+              disabled={loading || isLocked || !placeValidated}
               style={{
-                opacity: (loading || isLocked) ? 0.6 : 1,
-                cursor: (loading || isLocked) ? 'not-allowed' : 'pointer',
+                opacity: (loading || isLocked || !placeValidated) ? 0.6 : 1,
+                cursor: (loading || isLocked || !placeValidated) ? 'not-allowed' : 'pointer',
                 backgroundColor: isLocked ? '#666' : ''
               }}
             >

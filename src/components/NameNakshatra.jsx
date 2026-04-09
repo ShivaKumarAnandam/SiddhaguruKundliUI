@@ -1,8 +1,7 @@
 import { useState, useRef } from 'react'
 import './NakshatraCalculator.css'
 import './NameNakshatra.css'
-
-const API_BASE = 'https://siddhagurukundli.onrender.com/api'
+import { API_BASE } from '../apiConfig'
 
 const NameNakshatra = ({ onBack }) => {
   const [name, setName] = useState('')

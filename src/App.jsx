@@ -9,6 +9,7 @@ import NakshatraCalculatorAI from './components/NakshatraCalculatorAI'
 import FullHoroscope from './components/FullHoroscope'
 import FullHoroscopeAI from './components/FullHoroscopeAI'
 import GocharaChartAI from './components/GocharaChartAI'
+import GocharaSouthIndian from './components/GocharaSouthIndian'
 import NameNakshatra from './components/NameNakshatra'
 import './App.css'
 
@@ -40,6 +41,9 @@ function App() {
         )}
         {page === 'gochara-ai' && (
           <GocharaChartAI onBack={() => setPage('home')} />
+        )}
+        {page === 'gochara-south-indian' && (
+          <GocharaSouthIndian onBack={() => setPage('home')} />
         )}
         {page === 'name-nakshatra' && (
           <NameNakshatra onBack={() => setPage('home')} />

@@ -115,6 +115,11 @@ const Header = ({ onNavigate }) => {
                         Gochara By Gemini AI ✨
                       </button>
                     </li>
+                    <li className="_lvl-2-li">
+                      <button className="_lvl-2-a _kundli-link" onClick={() => { onNavigate?.('gochara-south-indian'); setIsMenuOpen(false); setOpenSubmenu(null) }}>
+                        Gochara Chart - South Indian (Nirayana)
+                      </button>
+                    </li>
                   </ul>
                 </li>
                 <li className={`_lvl-1-li -has-submenu ${openSubmenu === 'wisdom' ? '-active' : ''}`}>

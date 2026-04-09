@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SiddhaguruKundli</string>
+    <string name="title_activity_main">SiddhaguruKundli</string>
+    <string name="package_name">com.siddhaguru.kundli</string>
+    <string name="custom_url_scheme">com.siddhaguru.kundli</string>
+</resources>
