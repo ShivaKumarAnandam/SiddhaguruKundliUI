@@ -30,17 +30,19 @@ function App() {
         {page === 'nakshatra' && (
           <NakshatraCalculator onBack={() => setPage('home')} />
         )}
+        {/*
         {page === 'nakshatra-ai' && (
           <NakshatraCalculatorAI onBack={() => setPage('home')} />
-        )}
-        {page === 'horoscope' && (
-          <FullHoroscope onBack={() => setPage('home')} />
         )}
         {page === 'horoscope-ai' && (
           <FullHoroscopeAI onBack={() => setPage('home')} />
         )}
         {page === 'gochara-ai' && (
           <GocharaChartAI onBack={() => setPage('home')} />
+        )}
+        */}
+        {page === 'horoscope' && (
+          <FullHoroscope onBack={() => setPage('home')} />
         )}
         {page === 'gochara-south-indian' && (
           <GocharaSouthIndian onBack={() => setPage('home')} />
