@@ -28,7 +28,7 @@
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,.08);
-  overflow: hidden;
+  overflow: visible;
   max-width: 640px;
   margin: 0 auto;
 }
@@ -38,6 +38,7 @@
   color: #fff;
   padding: 24px;
   text-align: center;
+  border-radius: 12px 12px 0 0;
 }
 .nk-card-header h2 { font-size: 22px; margin-bottom: 4px; }
 .nk-card-header p  { font-size: 13px; opacity: .85; }
@@ -254,7 +255,7 @@
   }
 
   .nk-card { border-radius: 0; box-shadow: none; border-bottom: 1px solid #eee; }
-  .nk-card-header { padding: 20px 16px; }
+  .nk-card-header { padding: 20px 16px; border-radius: 0; }
   .nk-card-header h2 { font-size: 19px; }
   .nk-form { padding: 16px; }
 
